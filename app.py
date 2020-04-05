@@ -5,6 +5,7 @@ import logging
 import tensorflow as tf
 import numpy as np
 import multiprocessing
+import pathlib
 from multiprocessing import Queue, Pool
 
 from object_detection.utils import ops as utils_ops
@@ -13,8 +14,13 @@ from object_detection.utils import visualization_utils as vis_util
 
 # MODE can be LABELS OR BOX
 MODE = "LABELS"
+if pathlib.Path('unifi-url').exists():
+    with open('unifi-url') as f:
+        url = f.read()
+
 # VIDEO_SOURCE="rtsp://UNIFIIP:PORT/TOKEN"
-VIDEO_SOURCE=0
+VIDEO_SOURCE=url
+# VIDEO_SOURCE=0
 
 def worker(input_q, output_q):
     utils_ops.tf = tf.compat.v1
