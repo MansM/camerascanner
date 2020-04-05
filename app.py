@@ -13,9 +13,8 @@ from object_detection.utils import visualization_utils as vis_util
 
 # MODE can be LABELS OR BOX
 MODE = "LABELS"
-
-# stream = cv2.VideoCapture("rtsp://unifiip:port/token")
-stream = cv2.VideoCapture(0)
+# VIDEO_SOURCE="rtsp://UNIFIIP:PORT/TOKEN"
+VIDEO_SOURCE=0
 
 def worker(input_q, output_q):
     utils_ops.tf = tf.compat.v1
@@ -112,12 +111,14 @@ if __name__ == '__main__':
 
         input_q = Queue(2)  # fps is better if queue is higher but then more lags
         output_q = Queue()
-        pool = Pool(3, worker, (input_q, output_q))
+        pool = Pool(1, worker, (input_q, output_q))
 
     if (MODE == "BOX"):
         logger = logging.getLogger()
-        tensorflowNet = cv2.dnn.readNetFromTensorflow('ssd_mobilenet_v2_coco_2018_03_29/frozen_inference_graph.pb',
-                                                      'ssd_mobilenet_v2_coco_2018_03_29/graph.pbtxt')
+        tensorflowNet = cv2.dnn.readNetFromTensorflow('ssd_mobilenet_v1_coco_2017_11_17/frozen_inference_graph.pb',
+                                                      'ssd_mobilenet_v1_coco_2017_11_17/graph.pbtxt')
+
+    stream = cv2.VideoCapture(VIDEO_SOURCE)
 
     while (True):
         grabbed, frame = stream.read()
