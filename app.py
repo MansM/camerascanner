@@ -115,9 +115,9 @@ if __name__ == '__main__':
         logger = multiprocessing.log_to_stderr()
         logger.setLevel(multiprocessing.SUBDEBUG)
 
-        input_q = Queue(2)  # fps is better if queue is higher but then more lags
+        input_q = Queue(3)  # fps is better if queue is higher but then more lags
         output_q = Queue()
-        pool = Pool(1, worker, (input_q, output_q))
+        pool = Pool(3, worker, (input_q, output_q))
 
     if (MODE == "BOX"):
         logger = logging.getLogger()
