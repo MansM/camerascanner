@@ -1,0 +1,7 @@
+unifi-url
+venv
+ssd_*
+models*
+.idea
+*.pb
+*.pbtxt
