@@ -115,9 +115,9 @@ if __name__ == '__main__':
         logger = multiprocessing.log_to_stderr()
         logger.setLevel(multiprocessing.SUBDEBUG)
 
-        input_q = Queue(3)  # fps is better if queue is higher but then more lags
+        input_q = Queue(1)  # fps is better if queue is higher but then more lags
         output_q = Queue()
-        pool = Pool(3, worker, (input_q, output_q))
+        pool = Pool(1, worker, (input_q, output_q))
 
     if (MODE == "BOX"):
         logger = logging.getLogger()
@@ -137,9 +137,11 @@ if __name__ == '__main__':
 
         if (MODE == "LABELS"):
             # img = show_inference(detection_model, frame)
-            input_q.put(frame)
+            if (input_q.full() is not True): input_q.put_nowait(frame)
             # print(img)
-            frame = cv2.cvtColor(np.asarray(output_q.get()), cv2.COLOR_RGB2RGBA)
+            if (output_q.empty() is not True):
+                frame = cv2.cvtColor(np.asarray(output_q.get()), cv2.COLOR_RGB2RGBA)
+                cv2.imshow('Image', frame)
             # cv2.imread('frame')
 
         if (MODE == "BOX"):
@@ -162,8 +164,10 @@ if __name__ == '__main__':
                     # draw a red rectangle around detected objects
                     cv2.rectangle(frame, (int(left), int(top)), (int(right), int(bottom)), (0, 0, 255), thickness=2)
 
+            cv2.imshow('Image', frame)
+
         # Show the image with a rectagle surrounding the detected objects
-        cv2.imshow('Image', frame)
+
         # cv2.imshow('frame',gray)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
