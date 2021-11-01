@@ -6,5 +6,5 @@ needs opencv:
 sources:
 - https://jeanvitor.com/tensorflow-object-detecion-opencv/
 - https://github.com/datitran/object_detector_app
-- https://github.com/tensorflow/models/blob/master/research/object_detection/object_detection_tutorial.ipynb
+- https://github.com/tensorflow/models/blob/master/research/object_detection/colab_tutorials/object_detection_tutorial.ipynb
 
